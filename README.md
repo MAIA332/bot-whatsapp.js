@@ -10,36 +10,35 @@
 
 
 
- use este comando para iniciar o script
- ```shell
-    npm start
+ ```
+ https://docs.wwebjs.dev/index.html
  ```
 
- #
-
- > para adicionar novas frases, vá no arquivo `phraselist.json`
-
- ```json
- {
-    "phrases": [
-        "FELIZ ANIVERSARIO",
-        "ANOS DE VIDA",
-        "HAPPY BIRTHADAY",
-        "PARABENS"
-    ]
- }
- ```
-
- > para mudar as frases de resposta
-
- ```json
-    {
-        "resp": [
-            "Vlw",
-            "Obrigado",
-            "Obg",
-            "Thanks",
-            "muchas gracias"
-        ]
-    }
- ```
+### Package.json
+```
+{
+  "name": "bot-whatsapp",
+  "version": "1.0.0",
+  "description": "A bot to reply happy birthday message",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thisiscleverson/bot-whatsapp-js.git"
+  },
+  "author": "Cleverson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thisiscleverson/bot-whatsapp-js/issues"
+  },
+  "homepage": "https://github.com/thisiscleverson/bot-whatsapp-js#readme",
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "ts-node": "^10.9.2",
+    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#webpack-exodus"
+  }
+}
+```

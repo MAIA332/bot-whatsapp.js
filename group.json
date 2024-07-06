@@ -1,0 +1,185 @@
+{
+  "groupMetadata": {
+    "id": {
+      "server": "g.us",
+      "user": 120363315951490800,
+      "_serialized": "120363315951490800@g.us"
+    },
+    "creation": 1720208475,
+    "owner": {
+      "server": "c.us",
+      "user": 5511930769312,
+      "_serialized": "5511930769312@c.us"
+    },
+    "subject": "Notion - teste",
+    "restrict": false,
+    "announce": true,
+    "noFrequentlyForwarded": false,
+    "ephemeralDuration": 0,
+    "membershipApprovalMode": false,
+    "memberAddMode": "all_member_add",
+    "reportToAdminMode": false,
+    "support": false,
+    "suspended": false,
+    "terminated": false,
+    "uniqueShortNameMap": {},
+    "isLidAddressingMode": false,
+    "isParentGroup": false,
+    "isParentGroupClosed": false,
+    "defaultSubgroup": false,
+    "generalSubgroup": false,
+    "generalChatAutoAddDisabled": false,
+    "allowNonAdminSubGroupCreation": false,
+    "lastReportToAdminTimestamp": null,
+    "incognito": false,
+    "participants": [
+      {
+        "id": {
+          "server": "c.us",
+          "user": 5511930769312,
+          "_serialized": "5511930769312@c.us"
+        },
+        "isAdmin": true,
+        "isSuperAdmin": false
+      },
+      {
+        "id": {
+          "server": "c.us",
+          "user": 551151977528,
+          "_serialized": "551151977528@c.us"
+        },
+        "isAdmin": true,
+        "isSuperAdmin": false
+      }
+    ],
+    "pendingParticipants": [],
+    "pastParticipants": [],
+    "membershipApprovalRequests": [],
+    "subgroupSuggestions": []
+  },
+  "id": {
+    "server": "g.us",
+    "user": 120363315951490800,
+    "_serialized": "120363315951490800@g.us"
+  },
+  "name": "Notion - teste",
+  "isGroup": true,
+  "isReadOnly": false,
+  "unreadCount": 1,
+  "timestamp": 1720264117,
+  "archived": false,
+  "pinned": false,
+  "muteExpiration": 0,
+  "lastMessage": {
+    "_data": {
+      "id": {
+        "fromMe": false,
+        "remote": "120363315951490800@g.us",
+        "id": "3EB0DAB8F8111B24F685BD",
+        "participant": {
+          "server": "c.us",
+          "user": 5511930769312,
+          "_serialized": "5511930769312@c.us"
+        },
+        "_serialized": "false_120363315951490800@g.us_3EB0DAB8F8111B24F685BD_5511930769312@c.us"
+      },
+      "viewed": false,
+      "body": "whois",
+      "type": "chat",
+      "t": 1720264117,
+      "notifyName": "lukas maia",
+      "from": {
+        "server": "g.us",
+        "user": 120363315951490800,
+        "_serialized": "120363315951490800@g.us"
+      },
+      "to": {
+        "server": "c.us",
+        "user": 551151977528,
+        "_serialized": "551151977528@c.us"
+      },
+      "author": {
+        "server": "c.us",
+        "user": 5511930769312,
+        "_serialized": "5511930769312@c.us"
+      },
+      "ack": 1,
+      "invis": false,
+      "isNewMsg": true,
+      "star": false,
+      "kicNotified": false,
+      "recvFresh": true,
+      "isFromTemplate": false,
+      "pollInvalidated": false,
+      "isSentCagPollCreation": false,
+      "latestEditMsgKey": null,
+      "latestEditSenderTimestampMs": null,
+      "mentionedJidList": [],
+      "groupMentions": [],
+      "isEventCanceled": false,
+      "eventInvalidated": false,
+      "isVcardOverMmsDocument": false,
+      "isForwarded": false,
+      "labels": [],
+      "hasReaction": false,
+      "productHeaderImageRejected": false,
+      "lastPlaybackProgress": 0,
+      "isDynamicReplyButtonsMsg": false,
+      "isCarouselCard": false,
+      "parentMsgId": null,
+      "isMdHistoryMsg": false,
+      "stickerSentTs": 0,
+      "isAvatar": false,
+      "lastUpdateFromServerTs": 0,
+      "invokedBotWid": null,
+      "bizBotType": null,
+      "botResponseTargetId": null,
+      "botPluginType": null,
+      "botPluginReferenceIndex": null,
+      "botPluginSearchProvider": null,
+      "botPluginSearchUrl": null,
+      "botPluginSearchQuery": null,
+      "botPluginMaybeParent": false,
+      "botReelPluginThumbnailCdnUrl": null,
+      "botMsgBodyType": null,
+      "requiresDirectConnection": false,
+      "bizContentPlaceholderType": null,
+      "hostedBizEncStateMismatch": false,
+      "senderOrRecipientAccountTypeHosted": false,
+      "placeholderCreatedWhenAccountIsHosted": false,
+      "links": []
+    },
+    "id": {
+      "fromMe": false,
+      "remote": "120363315951490800@g.us",
+      "id": "3EB0DAB8F8111B24F685BD",
+      "participant": {
+        "server": "c.us",
+        "user": 5511930769312,
+        "_serialized": "5511930769312@c.us"
+      },
+      "_serialized": "false_120363315951490800@g.us_3EB0DAB8F8111B24F685BD_5511930769312@c.us"
+    },
+    "ack": 1,
+    "hasMedia": false,
+    "body": "whois",
+    "type": "chat",
+    "timestamp": 1720264117,
+    "from": "120363315951490800@g.us",
+    "to": "551151977528@c.us",
+    "author": "5511930769312@c.us",
+    "deviceType": "android",
+    "isForwarded": false,
+    "forwardingScore": 0,
+    "isStatus": false,
+    "isStarred": false,
+    "fromMe": false,
+    "hasQuotedMsg": false,
+    "hasReaction": false,
+    "vCards": [],
+    "mentionedIds": [],
+    "groupMentions": [],
+    "isGif": false,
+    "links": []
+  }
+}
