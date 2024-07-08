@@ -1,20 +1,65 @@
-## BOT WHATSAPP - JS
+## Projeto integrador Whatsapp + API
 
 * Script de resposta automatizada do WhatsApp usando NodeJS
 
- # dependências do projeto
+Este é um projeto não oficial que não utiliza os recursos oficiais da API do whatsapp bussines, risco de **ban no número**
+
+ ### dependências do projeto
  instale as dependências local do projeto para execultar o script!
  ```shell
-    npm install
+  npm install
  ```
 
-
-
+Documentação detalhada da biblioteca
  ```
  https://docs.wwebjs.dev/index.html
  ```
 
-### Package.json
+## Rotas: 
+
+### Enviar uma mensagem via API:
+Tipo: **POST**
+
+Endpoint: ```/sendMessage```
+
+Body:
+```
+{
+    "message":"teste",
+    "phone":"55119--------"
+}
+```
+### Obter o status da configuração atual:
+Tipo: **GET**
+
+Endpoint: ```/configs```
+
+## Comandos receptivos:
+
+```
+{
+  "category":"group", # Valido apenas para grupos
+  "command":"setGroup",
+},
+{
+  "category":"group", # Valido apenas para grupos
+  "command":"groupConfig",
+
+}
+```
+---
+
+Comando: ```setGroup```
+
+Função: Definir o grupo de onde foi mandada essa mensagem como o grupo para envio de informação pelos endpoints
+
+---
+
+Comando: ```groupConfig```
+
+Função: Visualizar a configuração atual
+
+## Package.json
 ```
 {
   "name": "bot-whatsapp",

@@ -6,17 +6,6 @@ class Configs{
             "objeto":{},
             "instancied":false
         }
-
-        this.commands = [
-            {
-                "category":"group",
-                "command":"setGroup"
-            },
-            {
-                "category":"group",
-                "command":"groupConfig"
-            },
-        ]
     }
 
     getGroup(){

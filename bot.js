@@ -20,7 +20,39 @@ const client = new Client({
     webVersionCache: { type: 'remote', remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html', }
 });
 
-// Definição de variáveis
+const findGroupByName = async function (name) {
+    const group = await client.getChats().then(chats => {
+      return chats.find(chat =>
+        chat.isGroup && chat.name.toLowerCase() == name.toLowerCase()
+      );
+    });
+    return group;
+}
+
+const setTemplateEcho = async function (args){
+    let message = `Hello @${args[0]} you chat is setted to ${JSON.stringify(args[1])}\n\n${args[2]}`
+    return message
+}
+
+const commands = [
+    {
+        "category":"group",
+        "command":"setGroup",
+        "function":async(chat)=>{
+            console.log("Setting group...");
+            config.setGroup(chat)
+        }
+    },
+    {
+        "category":"group",
+        "command":"groupConfig",
+        "function":async(arg)=>{
+            console.log(true);
+        }
+    },
+]
+
+// Definição de variáveis condicionais
 const verifications = [
     {
         conditions:(args)=>{
@@ -28,21 +60,34 @@ const verifications = [
                 return true
             }
         },
-        action: async (message)=>{
-            let user = await message.getContact();
-            const myGroup = config.getGroup();
+        action: async (message,comand,chat,user)=>{
+                 
+            //===========================
+            await comand[0].function(chat)
 
             try{
-                await myGroup.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
+                
+                //==========================
+                const myGroup = config.getGroup();
+                //==========================
+                const message =  await setTemplateEcho([user.id.user,myGroup,"Configurations has been changed"])
+                //=========================
+
+                
+                await myGroup.sendMessage(message, {
                     mentions: [user]
                 });
             }
             catch(e){
-                let chat = await message.getChat();
 
+                //==========================
+                const message =  await setTemplateEcho([user.id.user,chat,"Configurations has been keeped"])
+                //=========================
+
+                
                 config.setGroup(chat)
                
-                await chat.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
+                await chat.sendMessage(message, {
                     mentions: [user]
                 });
                 
@@ -51,15 +96,6 @@ const verifications = [
         }
     }
 ]
-
-const findGroupByName = async function (name) {
-    const group = await client.getChats().then(chats => {
-      return chats.find(chat =>
-        chat.isGroup && chat.name.toLowerCase() == name.toLowerCase()
-      );
-    });
-    return group;
-  }
 
 
 client.on('qr', (qr) => {
@@ -78,59 +114,18 @@ client.on('ready', () => {
 
 
 client.on('message', async message => {
-    let contact = await message.getContact()
-    console.log(contact);
 
-    if(message.body=="setGroup"){
+    let chat =  await message.getChat()
+    let comand = commands.filter(item=>item.command == message.body)
+    let user = await message.getContact();
 
-        console.log("finding chat...");
+    console.log(`Message identified on ${chat}, command identified ${comand} with label ${message.body} by contact ${user}`);
 
-        const chat = await message.getChat();
-
-        if(chat.isGroup == true){
-            console.log("Setting group...");
-            config.setGroup(chat)
-            
-            let user = await message.getContact();
-
-            console.log("Getting group");
-            let myGroup = config.getGroup()
-            
-            console.log(`Recebido uma mensão no grupo: ${myGroup} pelo usuário ${user.id.user}`);
-
-            await chat.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
-                mentions: [user]
-            });
-        }
-        else{
-            await chat.sendMessage(`Esse comando é apenas para grupos`);
-        }
+    for (const intent of verifications) {
         
-    }
-    else if(message.body=="groupConfig"){
-
-        const myGroup = config.getGroup();
-        let user = await message.getContact();
-
-        try{
-            await myGroup.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
-                mentions: [user]
-            });
+        if(intent.conditions([chat.isGroup,comand.length>=1])){
+            await intent.action(message,comand,chat,user)
         }
-        catch(e){
-            let chat = await message.getChat();
-
-            if(chat.isGroup == true){
-                await chat.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
-                    mentions: [user]
-                });
-            }
-            else{
-                await chat.sendMessage("Esse comando é apenas para grupos");
-            }
-            
-        }
-        
     }
     
 })
@@ -151,30 +146,35 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(process.cwd(), 'web', 'index.html'));
 });
 
-app.post('/sendMessage', async (req, res) => {
+app.post('/sendMessage', async (req, res) => {//message
     
-    console.log("root acionado");
+    console.log("Enviando mensagem...");
     let myGroup = config.getGroup();
 
     try{
-        await myGroup.sendMessage(`Hello @${req.body.phone} you chat is setted to ${JSON.stringify(myGroup)}`, {
+        await myGroup.sendMessage(`@${req.body.phone}:${req.body.message}`, {
             mentions: [`${req.body.phone}@c.us`]
         });
 
-        res.sendFile(path.join(process.cwd(), 'web', 'sucess.html'));
+        res.send(true)
     }
     catch(e){
-        res.sendFile(path.join(process.cwd(), 'web', 'error.html'));
+        res.send(false)
     }
 
     
     
 });
 
+app.get('/configs', async (req, res) => {
+    console.log("Buscando configurações...");
+    res.json(config); // Envia as configurações como JSON
+});
+
 client.initialize()
 
 // Inicia o servidor
-const PORT = process.env.PORT || 5000;
+const PORT = 7000;
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
