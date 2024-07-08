@@ -1,28 +1,11 @@
-const Phrases    = require('./phraselist.json') // ler o arquivo json com todas a frases para analisar
-const qrcode     = require('qrcode-terminal') 
+const Phrases = require('./phraselist.json') // ler o arquivo json com todas a frases para analisar
+const qrcode = require('qrcode-terminal') 
 const { Client, Status,LocalAuth } = require('whatsapp-web.js')
-//var groupOf = require('./group.json');
 const express = require("express")
 const path =  require('path')
+const { Configs } = require('./schemas/setups.js');
 
-class Configs{
-    constructor(){
-        
-        this.groupOf = {
-            "Name":"Notion - teste",
-            "objeto":[]
-        }
-    }
-
-    getGroup(){
-        return this.groupOf;
-    }
-
-    setGroup(group){
-        this.groupOf = group
-    }
-}
-
+let config = new Configs();
 
 const app = express();
 app.use(express.json());
@@ -37,6 +20,37 @@ const client = new Client({
     webVersionCache: { type: 'remote', remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html', }
 });
 
+// Definição de variáveis
+const verifications = [
+    {
+        conditions:(args)=>{
+            if(args.reduce((accumulator, currentValue) => accumulator && currentValue, true)){
+                return true
+            }
+        },
+        action: async (message)=>{
+            let user = await message.getContact();
+            const myGroup = config.getGroup();
+
+            try{
+                await myGroup.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
+                    mentions: [user]
+                });
+            }
+            catch(e){
+                let chat = await message.getChat();
+
+                config.setGroup(chat)
+               
+                await chat.sendMessage(`Hello @${user.id.user} you chat is setted to ${JSON.stringify(myGroup)}`, {
+                    mentions: [user]
+                });
+                
+                
+            }
+        }
+    }
+]
 
 const findGroupByName = async function (name) {
     const group = await client.getChats().then(chats => {
@@ -46,38 +60,6 @@ const findGroupByName = async function (name) {
     });
     return group;
   }
-
-
-let config = new Configs();
-
-//functions
-const getHours = () => {
-    let currentTime = new Date()
-    return `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`
-}
-
-
-const checkMessage = (Msg, contact) => {
-    let msg = Msg.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase()
-
-    for(let index in Phrases['phrases']){
-        //console.log(msg,':', msg.indexOf(Phrases['phrases'][index]))
-        if (msg.indexOf(Phrases['phrases'][index]) != -1) {
-            console.log(" ")    
-           	console.log(`📩 mensagem [ ${getHours()} ] por ${contact}: ${Msg}`)
-		    console.log("🔎 palavra chave: "+Phrases['phrases'][index])
-		return true
-        }
-    }
-    
-    return false
-}   
-
-
-const answers = () => {
-    let index = Math.floor(Math.random() * (Phrases['answers'].length - 1) + 1) // sortear qual frase de resposta vai ser usada
-    return Phrases['answers'][index]   
-}
 
 
 client.on('qr', (qr) => {
@@ -99,23 +81,7 @@ client.on('message', async message => {
     let contact = await message.getContact()
     console.log(contact);
 
-    if (message.body ==  "mention") {
-        console.log("IS mention");
-
-        const chat = await message.getChat();
-        
-        let user = await message.getContact();
-
-        
-        console.log(`Recebido uma mensão no grupo: ${chat} pelo usuário ${user.id.user}`);
-
-        //console.log(await findGroupByName("Notion - teste"));
-        
-        await chat.sendMessage(`Hello @${user.id.user}`, {
-            mentions: [user]
-        });
-    }
-    else if(message.body=="setGroup"){
+    if(message.body=="setGroup"){
 
         console.log("finding chat...");
 
@@ -165,22 +131,6 @@ client.on('message', async message => {
             
         }
         
-    }
-    else{
-        if(checkMessage(message.body, contact.pushname) == true){
-        
-            try{
-                
-                
-                await message.reply(answers())
-                
-                
-    
-            }catch(err){
-                console.log(`> ❗ O Anton teve um ploblema a responder ${contact.pushname} as [ ${getHours()} ]`)
-                console.log(`> 📩 mensagem recebida: ${message.body}`)
-            }
-        }
     }
     
 })

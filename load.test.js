@@ -1,26 +1,28 @@
+const { Configs } = require('./schemas/setups.js');
 
-class Configs{
-    constructor(){
-        
-        this.groupOf = {
-            "Name":"Notion - teste",
-            "objeto":[]
+let configsInstance = new Configs();
+
+const verifications = [
+    {
+        conditions:(args)=>{
+            if(args.reduce((accumulator, currentValue) => accumulator && currentValue, true)){
+                return true
+            }
+        },
+        action: async ()=>{
+            console.log("Verdade");
         }
     }
+]
 
-    getGroup(){
-        return this.groupOf;
-    }
-
-    setGroup(group){
-        this.groupOf = group
+for (const intent of verifications) {
+    if(intent.conditions([true,true])){
+        intent.action()
     }
 }
 
-let config = new Configs();
+console.log(configsInstance.getGroup());
 
-console.log(config.getGroup());
+configsInstance.setGroup({Name:"Teste",objeto:{}})
 
-config.setGroup({Name:"Teste",objeto:{}})
-
-console.log(config.getGroup());
+console.log(configsInstance.getGroup());
