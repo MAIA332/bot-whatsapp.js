@@ -1,4 +1,3 @@
-const Phrases = require('./phraselist.json') // ler o arquivo json com todas a frases para analisar
 const qrcode = require('qrcode-terminal') 
 const { Client, Status,LocalAuth } = require('whatsapp-web.js')
 const express = require("express")
@@ -119,7 +118,7 @@ client.on('message', async message => {
     let comand = commands.filter(item=>item.command == message.body)
     let user = await message.getContact();
 
-    console.log(`Message identified on ${chat}, command identified ${comand} with label ${message.body} by contact ${user}`);
+    console.log(`Message identified on ${chat}, command identified ${comand} with label ${message.body} by contact ${user.id.name}`);
 
     for (const intent of verifications) {
         
