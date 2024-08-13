@@ -1,11 +1,7 @@
 class Configs{
     constructor(){
         
-        this.groupOf = {
-            "Name":"Notion - teste",
-            "objeto":{},
-            "instancied":false
-        }
+        this.groupOf = []
     }
 
     getGroup(){
@@ -13,7 +9,7 @@ class Configs{
     }
 
     setGroup(group){
-        this.groupOf = group
+        this.groupOf.push(group)
     }
 }
 

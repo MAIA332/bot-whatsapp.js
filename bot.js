@@ -12,7 +12,9 @@ app.use(express.json());
 // Inicializações =>
 const client = new Client({
     puppeteer: {
-        authStrategy: new LocalAuth(),
+        authStrategy: new LocalAuth({
+            clientId: "client-one"
+        }),
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-extensions', '--disable-gpu']
     },
@@ -27,6 +29,8 @@ const findGroupByName = async function (name) {
     });
     return group;
 }
+
+const authorized_adms = ["5511930769312","551157979336","551151992663","5511966155397"]
 
 const setTemplateEcho = async function (args){
     let message = `Hello @${args[0]} you chat is setted to ${JSON.stringify(args[1])}\n\n${args[2]}`
@@ -46,7 +50,7 @@ const commands = [
         "category":"group",
         "command":"groupConfig",
         "function":async(arg)=>{
-            console.log(true);
+            console.log(config.getGroup());
         }
     },
 ]
@@ -64,34 +68,8 @@ const verifications = [
             //===========================
             await comand[0].function(chat)
 
-            try{
-                
-                //==========================
-                const myGroup = config.getGroup();
-                //==========================
-                const message =  await setTemplateEcho([user.id.user,myGroup,"Configurations has been changed"])
-                //=========================
-
-                
-                await myGroup.sendMessage(message, {
-                    mentions: [user]
-                });
-            }
-            catch(e){
-
-                //==========================
-                const message =  await setTemplateEcho([user.id.user,chat,"Configurations has been keeped"])
-                //=========================
-
-                
-                config.setGroup(chat)
-               
-                await chat.sendMessage(message, {
-                    mentions: [user]
-                });
-                
-                
-            }
+            //console.log(chat);
+            
         }
     }
 ]
@@ -102,8 +80,9 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-client.on('authenticated', () => {
-    console.log('AUTHENTICATED');
+
+client.on('authenticated', (session) => {
+    console.log('AUTHENTICATED', session);
 });
 
 
@@ -118,11 +97,11 @@ client.on('message', async message => {
     let comand = commands.filter(item=>item.command == message.body)
     let user = await message.getContact();
 
-    console.log(`Message identified on ${chat}, command identified ${comand} with label ${message.body} by contact ${user.id.name}`);
-
     for (const intent of verifications) {
         
-        if(intent.conditions([chat.isGroup,comand.length>=1])){
+        if(intent.conditions([chat.isGroup,comand.length>=1,authorized_adms.includes(user.id.user)])){
+            console.log(`Message identified on ${chat.name}, command identified ${comand[0]} with label ${message.body} by contact ${user.id.user}`);
+            //console.log(user.id);
             await intent.action(message,comand,chat,user)
         }
     }
@@ -150,15 +129,23 @@ app.post('/sendMessage', async (req, res) => {//message
     console.log("Enviando mensagem...");
     let myGroup = config.getGroup();
 
+    //===============================
+    let targetGroup = req.body.group;
+
+    let filtredGroup  = myGroup.filter(item=>item.name == targetGroup)
+    console.log("FILTERED GROUP",filtredGroup);
+    
+    //===============================
+
     try{
-        await myGroup.sendMessage(`@${req.body.phone}:${req.body.message}`, {
+        await filtredGroup[0].sendMessage(`@${req.body.phone}:${req.body.message}`, {
             mentions: [`${req.body.phone}@c.us`]
         });
 
         res.send(true)
     }
     catch(e){
-        res.send(false)
+        res.send(JSON.stringify(e.message))
     }
 
     
