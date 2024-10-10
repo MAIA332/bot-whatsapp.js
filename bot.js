@@ -30,7 +30,7 @@ const findGroupByName = async function (name) {
     return group;
 }
 
-const authorized_adms = ["5511930769312","551157979336","551151992663","5511966155397"]
+const authorized_adms = ["5511930769312"]
 
 const setTemplateEcho = async function (args){
     let message = `Hello @${args[0]} you chat is setted to ${JSON.stringify(args[1])}\n\n${args[2]}`
